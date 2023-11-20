@@ -1,0 +1,105 @@
+# Components prefixed CB are for callback hyperparameter settings
+
+__package_info__:
+  package: utime
+  version: 1.1.8
+
+CB_tb: &TB
+  # tensorboard
+  nickname: tb
+  class_name: TensorBoard
+  kwargs: {log_dir: ./tensorboard, profile_batch: 0}
+
+CB_es: &ES
+  # Early stopping
+  nickname: es
+  class_name: EarlyStopping
+  kwargs: {monitor: val_dice, min_delta: 0, patience: 200, verbose: 1, mode: max}
+
+CB_mcp: &MCP
+  # Model checkpoint
+  nickname: mcp
+  class_name: ModelCheckpoint
+  kwargs: {filepath: './model/@epoch_{epoch:02d}_val_dice_{val_dice:.5f}.h5', monitor: val_dice,
+    save_best_only: false, save_weights_only: true, verbose: 1, mode: max}
+
+CB_timer: &TIMER
+  # Train timer callback
+  nickname: timer
+  class_name: TrainTimer
+  pass_logger: true
+  kwargs: {verbose: true}
+
+CB_csv: &CSV
+  # keras.CSVLogger
+  nickname: csv
+  class_name: CSVLogger
+  kwargs: {filename: logs/training.csv, separator: ',', append: true}
+
+datasets:
+  # Add dataset IDs --> relative paths here
+
+  #### Training datasets
+  Alessandro-cleaned-data: /scratch/users/laurose/usleep-EEG-split_2/hyperparameters/dataset_configurations/preprocessed/Alessandro-cleaned-data.yaml
+  Antoine-cleaned-data: /scratch/users/laurose/usleep-EEG-split_2/hyperparameters/dataset_configurations/preprocessed/Antoine-cleaned-data.yaml
+  Kornum-cleaned-data_v2: /scratch/users/laurose/usleep-EEG-split_2/hyperparameters/dataset_configurations/preprocessed/Kornum-cleaned-data_v2.yaml
+  Maiken-cleaned-data: /scratch/users/laurose/usleep-EEG-split_2/hyperparameters/dataset_configurations/preprocessed/Maiken-cleaned-data.yaml
+  Sebastian-cleaned-data: /scratch/users/laurose/usleep-EEG-split_2/hyperparameters/dataset_configurations/preprocessed/Sebastian-cleaned-data.yaml
+
+build:
+  #
+  # Hyperparameters passed to the Model.build and __init__ methods
+  #
+  model_class_name: USleep
+  activation: elu
+  depth: 12
+  kernel_size: 9
+  dilation: 1
+  transition_window: 1
+  complexity_factor: 1.67
+  n_classes: 3
+  l2_reg:
+  batch_shape:
+  - 128
+  - 11
+  - 512
+  - 1
+
+augmenters:
+  # On-the-fly augmentation
+  [{cls_name: RegionalErase, kwargs: {min_region_fraction: 0.001, max_region_fraction: 0.33, log_sample: true,
+      apply_prob: 0.1}}]
+
+
+fit:
+  # Hyperparameters passed to the Trainer object
+  balanced_sampling: true
+  use_multiprocessing: false
+  channel_mixture: false
+  margin: 5
+
+  # Loss function(s)
+  loss: [SparseCategoricalCrossentropy]
+  # loss_kwargs:  # OBS: passed to all losses
+  #   name: my_loss
+
+  # Metric function(s)
+  metrics: [SparseCategoricalAccuracy]
+  # metric_kwargs:  # OBS: passed to all metrics
+  #   name: my_metric
+
+  # Ignore 'out-of-bounds' classes in loss computation (e.g. to ignore 'UNKNOWN'/'MOVEMENT' other rare classes)
+  # Comment out or set to Null/False to not ignore any classes
+  ignore_out_of_bounds_classes: true
+
+  # Optimization
+  batch_size: 128
+  n_epochs: 1200
+  verbose: true
+  optimizer: Adam
+  optimizer_kwargs: {learning_rate: 1e-05, amsgrad: true, decay: 0.0, beta_1: 0.9,
+    beta_2: 0.999, epsilon: 1.0e-8}
+
+  # Callbacks
+  callbacks: [*TB, *MCP, *TIMER, *CSV, *ES]
+  init_epoch: 401

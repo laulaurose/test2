@@ -1,0 +1,53 @@
+train_data:
+  data_dir: /scratch/users/laurose/usleep_all/data/Kornum-cleaned-data_v2/processed/kornum/views/5_CV/split_3/train/
+  period_length: 4
+  identifier: TRAIN
+  psg_regex: .*.h5
+  hyp_regex: labels_3.ids
+  time_unit: SECOND
+
+val_data:
+  data_dir: /scratch/users/laurose/usleep_all/data/Kornum-cleaned-data_v2/processed/kornum/views/5_CV/split_3/val/
+  period_length: 4
+  identifier: VAL
+  psg_regex: .*.h5
+  hyp_regex: labels_3.ids
+  time_unit: SECOND
+
+test_data:
+  data_dir: /scratch/users/laurose/usleep_all/data/Kornum-cleaned-data_v2/processed/kornum/views/5_CV/split_3/test/
+  period_length: 4
+  identifier: TEST
+  psg_regex: .*.h5
+  hyp_regex: labels_3.ids
+  time_unit: SECOND
+
+set_sample_rate: 128
+
+channel_sampling_groups: [[EMG]]
+auto_channel_grouping: [EMG]
+
+sleep_stage_annotations:
+  1: 0
+  2: 1
+  3: 2
+
+
+# strip_func:
+#   # Keep blank to apply no strip function
+#   strip_func: strip_to_match
+
+quality_control_func:
+  quality_control_func: clip_noisy_values
+  min_max_times_global_iqr: 20
+
+scaler: RobustScaler
+
+batch_wise_scaling: false
+
+filter_settings:
+  l_freq: 0.3
+  h_freq: 35
+  method: fir
+
+

@@ -1,0 +1,19 @@
+channel_sampling_groups: [[EEG1], [EMG]]
+train_data:
+  data_dir: /scratch/users/laurose/usleep-all-split_0/processed_data.h5
+  period_length: 4.0
+  time_unit: SECOND
+  identifier: TRAIN
+
+val_data:
+  data_dir: /scratch/users/laurose/usleep-all-split_0/processed_data.h5
+  period_length: 4.0
+  time_unit: SECOND
+  identifier: VAL
+
+test_data:
+  data_dir: /scratch/users/laurose/usleep-all-split_0/processed_data.h5
+  period_length: 4.0
+  time_unit: SECOND
+  identifier: TEST
+

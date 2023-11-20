@@ -1,0 +1,36 @@
+#!/usr/bin/bash
+#SBATCH --job-name=main
+#SBATCH --output=main.%j.out
+#SBATCH --error=main.%j.err
+#SBATCH -p gpu,mignot
+#SBATCH -G 1
+cd /scratch/users/laurose/usleep-all-split_0/
+sbatch /scratch/users/laurose/usleep-all-split_0/train.sbatch
+cd /scratch/users/laurose/usleep-all-split_1/
+sbatch /scratch/users/laurose/usleep-all-split_1/train.sbatch
+cd /scratch/users/laurose/usleep-all-split_2/
+sbatch /scratch/users/laurose/usleep-all-split_2/train.sbatch
+cd /scratch/users/laurose/usleep-all-split_3/
+sbatch /scratch/users/laurose/usleep-all-split_3/train.sbatch
+cd /scratch/users/laurose/usleep-all-split_4/
+sbatch /scratch/users/laurose/usleep-all-split_4/train.sbatch
+cd /scratch/users/laurose/usleep-EMG-split_0
+sbatch /scratch/users/laurose/usleep-EMG-split_0/train.sbatch
+cd /scratch/users/laurose/usleep-EMG-split_1
+sbatch /scratch/users/laurose/usleep-EMG-split_1/train.sbatch
+cd /scratch/users/laurose/usleep-EMG-split_2
+sbatch /scratch/users/laurose/usleep-EMG-split_2/train.sbatch
+cd /scratch/users/laurose/usleep-EMG-split_3
+sbatch /scratch/users/laurose/usleep-EMG-split_3/train.sbatch
+cd /scratch/users/laurose/usleep-EMG-split_4
+sbatch /scratch/users/laurose/usleep-EMG-split_4/train.sbatch
+cd /scratch/users/laurose/usleep-EEG-split_0
+sbatch /scratch/users/laurose/usleep-EEG-split_0/train.sbatch
+cd /scratch/users/laurose/usleep-EEG-split_1
+sbatch /scratch/users/laurose/usleep-EEG-split_1/train.sbatch
+cd /scratch/users/laurose/usleep-EEG-split_2
+sbatch /scratch/users/laurose/usleep-EEG-split_2/train.sbatch
+cd /scratch/users/laurose/usleep-EEG-split_3
+sbatch /scratch/users/laurose/usleep-EEG-split_3/train.sbatch
+cd /scratch/users/laurose/usleep-EEG-split_4
+sbatch /scratch/users/laurose/usleep-EEG-split_4/train.sbatch
